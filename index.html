@@ -468,4 +468,166 @@ textarea {
 }
 </style>
   </head>
-  
+  <body>
+
+<!-- LOADING SCREEN -->
+<div id="loadingScreen">
+  <div>LOADING<br>YOUR DECK...</div>
+</div>
+
+<!-- ONBOARDING -->
+<div id="onboarding" style="display:none;">
+  <h1>Welcome</h1>
+  <p style="margin-top:10px;opacity:0.8;">
+    This deck helps you regulate emotions, break patterns, and stay grounded.
+  </p>
+  <button id="startAppBtn" class="btn-nav" style="margin-top:20px;">Begin</button>
+</div>
+
+<!-- JOURNAL LOCK -->
+<div id="journalLock">
+  <h2>Unlock Journal</h2>
+  <input id="journalPass" type="password" placeholder="Enter password" style="padding:10px;border-radius:8px;margin-top:10px;">
+  <button id="unlockJournalBtn" class="btn-nav" style="margin-top:10px;">Unlock</button>
+</div>
+
+<!-- GUIDE MODAL -->
+<div id="guideModal">
+  <h2 style="text-align:center;margin-bottom:10px;">Usage Guide</h2>
+
+  <div class="guide-section" data-open="false">
+    <div class="guide-title">How to Use the Deck</div>
+    <div class="guide-content">
+      <p>This deck helps you regulate emotions, break patterns, and stay grounded.</p>
+    </div>
+  </div>
+
+  <div class="guide-section" data-open="false">
+    <div class="guide-title">Daily Ritual</div>
+    <div class="guide-content">
+      <p>Pull one card each morning and reflect for 60 seconds.</p>
+    </div>
+  </div>
+
+  <div class="guide-section" data-open="false">
+    <div class="guide-title">Three-Card Spread</div>
+    <div class="guide-content">
+      <p>Past — Present — Future emotional states.</p>
+    </div>
+  </div>
+
+  <button id="closeGuideBtn" class="btn-nav" style="margin-top:20px;">Close</button>
+</div>
+
+<!-- SETTINGS MODAL -->
+<div id="settingsModal">
+  <h2 style="text-align:center;margin-bottom:10px;">Settings</h2>
+
+  <div class="settings-section">
+    <label>Theme Style</label>
+    <select id="themeStyle" style="width:100%;padding:8px;border-radius:8px;">
+      <option value="default">Default</option>
+      <option value="soft">Soft Pastel</option>
+      <option value="neon">Neon Chaos</option>
+      <option value="void">Dark Void</option>
+    </select>
+  </div>
+
+  <div class="settings-section">
+    <label>Background Music</label>
+    <button id="toggleMusic" class="btn-nav" style="margin-top:6px;">Toggle Music</button>
+  </div>
+
+  <div class="settings-section">
+    <label>Reset Streak</label>
+    <button id="resetStreak" class="btn-nav" style="margin-top:6px;">Reset</button>
+  </div>
+
+  <button id="addCardBtn" class="btn-nav" style="margin-top:6px;width:100%;">Add Custom Card</button>
+
+  <button id="closeSettingsBtn" class="btn-nav" style="margin-top:20px;">Close</button>
+</div>
+
+<!-- ADD CARD MODAL -->
+<div id="addCardModal">
+  <h2>Add Custom Card</h2>
+
+  <input id="customFront" placeholder="Front text" style="padding:8px;border-radius:8px;margin-bottom:10px;width:100%;">
+  <input id="customBack" placeholder="Back text" style="padding:8px;border-radius:8px;margin-bottom:10px;width:100%;">
+
+  <select id="customCategory" style="padding:8px;border-radius:8px;margin-bottom:10px;width:100%;">
+    <!-- JS will populate categories -->
+  </select>
+
+  <button id="saveCustomCard" class="btn-nav">Save</button>
+  <button id="closeAddCard" class="btn-nav" style="margin-top:10px;">Cancel</button>
+</div>
+
+<!-- BACKGROUND MUSIC -->
+<audio id="bgMusic" loop src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_7e3e02f5e3.mp3?filename=calm-lofi-ambient-110397.mp3"></audio>
+
+<!-- MAIN APP -->
+<div class="app">
+
+  <div class="app-header">DECK OF EMOTIONAL MASTERY</div>
+
+  <!-- CATEGORY BAR -->
+  <div class="category-bar" id="categoryBar">
+    <!-- JS will populate -->
+  </div>
+
+  <!-- CARD -->
+  <div class="card-shell" id="cardShell">
+    <div class="card-category-pill">
+      <span class="card-category-icon" id="cardIcon">✨</span>
+      <span id="cardCategory">Category</span>
+    </div>
+
+    <div class="card-text" id="cardFront">Front text</div>
+    <div class="card-text back" id="cardBack" style="display:none;">Back text</div>
+
+    <div class="card-footer">
+      <span id="cardIndex">1 / 99</span>
+      <span id="streakDisplay">🔥 0‑day streak</span>
+    </div>
+  </div>
+
+  <!-- NAVIGATION -->
+  <div class="nav-row">
+    <div class="nav-buttons">
+      <button id="prevBtn" class="btn-nav">Prev</button>
+      <button id="flipBtn" class="btn-flip">Flip</button>
+      <button id="nextBtn" class="btn-nav">Next</button>
+    </div>
+  </div>
+
+  <!-- JOURNAL -->
+  <div class="journal">
+    <div class="journal-label">Reflection</div>
+
+    <div class="journal-tabs" id="journalTabs">
+      <div class="journal-tab active" data-tab="reflection">Reflection</div>
+      <div class="journal-tab" data-tab="insight">Insight</div>
+      <div class="journal-tab" data-tab="action">Action</div>
+    </div>
+
+    <textarea id="journalEntry" placeholder="Write your thoughts..."></textarea>
+
+    <div class="mood-row" id="moodRow">
+      <div class="mood-pill">😐</div>
+      <div class="mood-pill">😔</div>
+      <div class="mood-pill">😡</div>
+      <div class="mood-pill">😰</div>
+      <div class="mood-pill">😊</div>
+      <div class="mood-pill">🔥</div>
+    </div>
+
+    <button id="saveJournalBtn" class="btn-reflect">Save Entry</button>
+  </div>
+
+  <!-- BOTTOM BUTTONS -->
+  <button id="guideBtn" class="btn-nav">Usage Guide</button>
+  <button id="settingsBtn" class="btn-nav">Settings</button>
+
+       </div>
+         
