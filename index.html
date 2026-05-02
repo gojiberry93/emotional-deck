@@ -1,1 +1,905 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Deck of Emotional Mastery</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
+<!-- App Icon + Theme -->
+<link rel="icon" href="https://i.imgur.com/1XQw1QF.png">
+<link rel="apple-touch-icon" href="https://i.imgur.com/1XQw1QF.png">
+<meta name="theme-color" content="#ff007f">
+
+<style>
+/* --------------------------------------------------
+   GLOBAL VARIABLES
+-------------------------------------------------- */
+:root {
+  --plum: #53194E;
+  --hot-pink: #FF007F;
+  --teal: #008080;
+  --olive: #708238;
+  --sky: #87CEEB;
+  --navy: #1A1A40;
+  --black: #000000;
+  --bg: #111111;
+  --text: #FFFFFF;
+}
+
+/* --------------------------------------------------
+   RESET + BASE
+-------------------------------------------------- */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+body {
+  background: #ff007f;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  color: var(--text);
+  transition: background 0.3s ease;
+}
+
+/* --------------------------------------------------
+   APP CONTAINER
+-------------------------------------------------- */
+.app {
+  background: #000000;
+  border-radius: 24px;
+  max-width: 420px;
+  width: 100%;
+  padding: 16px 16px 20px;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  position: relative;
+}
+
+/* --------------------------------------------------
+   HEADER
+-------------------------------------------------- */
+.app-header {
+  text-align: center;
+  font-size: 12px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #ffb3d5;
+}
+
+/* --------------------------------------------------
+   CATEGORY BAR
+-------------------------------------------------- */
+.category-bar {
+  display: flex;
+  gap: 4px;
+  margin-top: 4px;
+  justify-content: space-between;
+}
+
+.category-tab {
+  flex: 1;
+  border-radius: 999px;
+  padding: 4px 6px;
+  font-size: 9px;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #ffffff;
+  opacity: 0.6;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  border: 1px solid transparent;
+  transition: 0.2s ease;
+}
+
+.category-tab.active {
+  opacity: 1;
+  border-color: #ffffff;
+}
+
+.category-tab span.icon {
+  font-size: 12px;
+}
+
+/* --------------------------------------------------
+   CARD SHELL
+-------------------------------------------------- */
+.card-shell {
+  position: relative;
+  background: radial-gradient(circle at top, #2b002b, #000000);
+  border-radius: 20px;
+  padding: 18px 16px 16px;
+  min-height: 260px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow: hidden;
+  transition: background 0.3s ease;
+}
+
+/* Card Draw Animation */
+.card-shell.draw {
+  animation: drawCard 0.5s ease;
+}
+
+@keyframes drawCard {
+  0% { transform: scale(0.8) rotate(-3deg); opacity:0; }
+  100% { transform: scale(1) rotate(0deg); opacity:1; }
+}
+
+/* --------------------------------------------------
+   CARD CONTENT
+-------------------------------------------------- */
+.card-category-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  background: rgba(0,0,0,0.5);
+  color: #ffffff;
+}
+
+.card-category-icon {
+  font-size: 14px;
+}
+
+.card-text {
+  margin-top: 12px;
+  font-weight: 800;
+  font-size: 18px;
+  line-height: 1.3;
+  text-transform: uppercase;
+  transition: transform 0.35s ease, opacity 0.35s ease;
+}
+
+.card-text.back {
+  font-size: 15px;
+  text-transform: none;
+  font-weight: 600;
+}
+
+/* Swipe Animations */
+.card-text.swipe-left {
+  transform: translateX(-80px);
+  opacity: 0;
+}
+
+.card-text.swipe-right {
+  transform: translateX(80px);
+  opacity: 0;
+}
+
+/* Flip Animations */
+.card-text.flip-out {
+  transform: rotateY(90deg);
+  opacity: 0;
+}
+
+.card-text.flip-in {
+  transform: rotateY(0deg);
+  opacity: 1;
+}
+
+/* --------------------------------------------------
+   CARD FOOTER
+-------------------------------------------------- */
+.card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 16px;
+  font-size: 11px;
+  opacity: 0.8;
+}
+
+.card-index {
+  font-variant-numeric: tabular-nums;
+}
+
+/* --------------------------------------------------
+   BUTTONS
+-------------------------------------------------- */
+.nav-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 8px;
+  gap: 8px;
+}
+
+.nav-buttons {
+  display: flex;
+  gap: 8px;
+}
+
+button {
+  border: none;
+  cursor: pointer;
+  border-radius: 999px;
+  padding: 8px 14px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.btn-nav {
+  background: #1f1f1f;
+  color: #ffffff;
+}
+
+.btn-reflect {
+  background: #ff007f;
+  color: #000000;
+  flex: 1;
+  text-align: center;
+  margin-top: 6px;
+}
+
+.btn-flip {
+  background: #ffffff;
+  color: #000000;
+}
+
+/* --------------------------------------------------
+   JOURNAL
+-------------------------------------------------- */
+.journal {
+  margin-top: 10px;
+  background: #111111;
+  border-radius: 16px;
+  padding: 10px 10px 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.journal-label {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  opacity: 0.7;
+}
+
+.journal-tabs {
+  display: flex;
+  gap: 4px;
+  margin-top: 4px;
+  flex-wrap: wrap;
+}
+
+.journal-tab {
+  padding: 4px 8px;
+  border-radius: 999px;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  background: #1f1f1f;
+  color: #ffffff;
+  opacity: 0.6;
+  cursor: pointer;
+  border: 1px solid transparent;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.journal-tab.active {
+  opacity: 1;
+  border-color: #ff007f;
+  background: #2b002b;
+}
+
+textarea {
+  width: 100%;
+  min-height: 70px;
+  border-radius: 10px;
+  border: 1px solid #333333;
+  background: #050505;
+  color: #ffffff;
+  padding: 8px;
+  font-size: 12px;
+  resize: vertical;
+  margin-top: 4px;
+}
+
+/* --------------------------------------------------
+   MOOD TAGS
+-------------------------------------------------- */
+.mood-row {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-top: 2px;
+}
+
+.mood-pill {
+  font-size: 14px;
+  padding: 4px 8px;
+  border-radius: 999px;
+  background: #1f1f1f;
+  cursor: pointer;
+  border: 1px solid transparent;
+}
+
+.mood-pill.active {
+  border-color: #ff007f;
+  background: #2b002b;
+}
+
+/* --------------------------------------------------
+   GUIDE + SETTINGS MODALS
+-------------------------------------------------- */
+#guideModal, #settingsModal, #addCardModal, #journalLock {
+  position:fixed;
+  inset:0;
+  background:#000000d9;
+  display:none;
+  flex-direction:column;
+  z-index:9997;
+  padding:20px;
+  color:white;
+  overflow-y:auto;
+}
+
+#guideModal::-webkit-scrollbar,
+#settingsModal::-webkit-scrollbar {
+  width: 6px;
+}
+#guideModal::-webkit-scrollbar-thumb,
+#settingsModal::-webkit-scrollbar-thumb {
+  background: #ff007f;
+  border-radius: 10px;
+}
+
+.guide-section {
+  background:#111;
+  border-radius:12px;
+  padding:10px 14px;
+  margin-bottom:12px;
+  transition:0.3s ease;
+}
+
+.guide-title {
+  margin:0;
+  font-size:16px;
+  cursor:pointer;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+.guide-title::after {
+  content:"+";
+  font-size:20px;
+  transition:0.3s ease;
+}
+
+.guide-section[data-open="true"] .guide-title::after {
+  content:"–";
+}
+
+.guide-content {
+  max-height:0;
+  overflow:hidden;
+  opacity:0;
+  transition:0.3s ease;
+}
+
+.guide-section[data-open="true"] .guide-content {
+  max-height:500px;
+  opacity:1;
+  margin-top:8px;
+}
+
+/* --------------------------------------------------
+   LOADING SCREEN
+-------------------------------------------------- */
+#loadingScreen {
+  position:fixed;
+  inset:0;
+  background:#ff007f;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex-direction:column;
+  z-index:9999;
+  color:#fff;
+  font-size:20px;
+  font-weight:700;
+  letter-spacing:0.1em;
+  text-align:center;
+  transition:opacity 0.4s ease;
+}
+
+/* --------------------------------------------------
+   ONBOARDING
+-------------------------------------------------- */
+#onboarding {
+  position:fixed;
+  inset:0;
+  background:#000000e8;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  z-index:9998;
+  color:white;
+  padding:20px;
+  text-align:center;
+  transition:opacity 0.4s ease;
+}
+
+/* --------------------------------------------------
+   SETTINGS SECTIONS
+-------------------------------------------------- */
+.settings-section {
+  background:#111;
+  padding:12px;
+  border-radius:12px;
+  margin-bottom:12px;
+}
+
+/* --------------------------------------------------
+   RESPONSIVE
+-------------------------------------------------- */
+@media (max-width: 480px) {
+  .card-text {
+    font-size: 16px;
+  }
+  .card-text.back {
+    font-size: 14px;
+  }
+}
+</style>
+</head>
+<body>
+
+<!-- LOADING SCREEN -->
+<div id="loadingScreen">
+  <div>LOADING<br>YOUR DECK...</div>
+</div>
+
+<!-- ONBOARDING -->
+<div id="onboarding" style="display:none;">
+  <h1>Welcome</h1>
+  <p style="margin-top:10px;opacity:0.8;">
+    This deck helps you regulate emotions, break patterns, and stay grounded.
+  </p>
+  <button id="startAppBtn" class="btn-nav" style="margin-top:20px;">Begin</button>
+</div>
+
+<!-- JOURNAL LOCK -->
+<div id="journalLock">
+  <h2>Unlock Journal</h2>
+  <input id="journalPass" type="password" placeholder="Enter password" style="padding:10px;border-radius:8px;margin-top:10px;">
+  <button id="unlockJournalBtn" class="btn-nav" style="margin-top:10px;">Unlock</button>
+</div>
+
+<!-- GUIDE MODAL -->
+<div id="guideModal">
+  <h2 style="text-align:center;margin-bottom:10px;">Usage Guide</h2>
+
+  <div class="guide-section" data-open="false">
+    <div class="guide-title">How to Use the Deck</div>
+    <div class="guide-content">
+      <p>This deck helps you regulate emotions, break patterns, and stay grounded.</p>
+    </div>
+  </div>
+
+  <div class="guide-section" data-open="false">
+    <div class="guide-title">Daily Ritual</div>
+    <div class="guide-content">
+      <p>Pull one card each morning and reflect for 60 seconds.</p>
+    </div>
+  </div>
+
+  <div class="guide-section" data-open="false">
+    <div class="guide-title">Three-Card Spread</div>
+    <div class="guide-content">
+      <p>Past — Present — Future emotional states.</p>
+    </div>
+  </div>
+
+  <button id="closeGuideBtn" class="btn-nav" style="margin-top:20px;">Close</button>
+</div>
+
+<!-- SETTINGS MODAL -->
+<div id="settingsModal">
+  <h2 style="text-align:center;margin-bottom:10px;">Settings</h2>
+
+  <div class="settings-section">
+    <label>Theme Style</label>
+    <select id="themeStyle" style="width:100%;padding:8px;border-radius:8px;">
+      <option value="default">Default</option>
+      <option value="soft">Soft Pastel</option>
+      <option value="neon">Neon Chaos</option>
+      <option value="void">Dark Void</option>
+    </select>
+  </div>
+
+  <div class="settings-section">
+    <label>Background Music</label>
+    <button id="toggleMusic" class="btn-nav" style="margin-top:6px;">Toggle Music</button>
+  </div>
+
+  <div class="settings-section">
+    <label>Reset Streak</label>
+    <button id="resetStreak" class="btn-nav" style="margin-top:6px;">Reset</button>
+  </div>
+
+  <button id="addCardBtn" class="btn-nav" style="margin-top:6px;width:100%;">Add Custom Card</button>
+
+  <button id="closeSettingsBtn" class="btn-nav" style="margin-top:20px;">Close</button>
+</div>
+
+<!-- ADD CARD MODAL -->
+<div id="addCardModal">
+  <h2>Add Custom Card</h2>
+
+  <input id="customFront" placeholder="Front text" style="padding:8px;border-radius:8px;margin-bottom:10px;width:100%;">
+  <input id="customBack" placeholder="Back text" style="padding:8px;border-radius:8px;margin-bottom:10px;width:100%;">
+
+  <select id="customCategory" style="padding:8px;border-radius:8px;margin-bottom:10px;width:100%;">
+    <!-- JS will populate categories -->
+  </select>
+
+  <button id="saveCustomCard" class="btn-nav">Save</button>
+  <button id="closeAddCard" class="btn-nav" style="margin-top:10px;">Cancel</button>
+</div>
+
+<!-- BACKGROUND MUSIC -->
+<audio id="bgMusic" loop src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_7e3e02f5e3.mp3?filename=calm-lofi-ambient-110397.mp3"></audio>
+
+<!-- MAIN APP -->
+<div class="app">
+
+  <div class="app-header">DECK OF EMOTIONAL MASTERY</div>
+
+  <!-- CATEGORY BAR -->
+  <div class="category-bar" id="categoryBar">
+    <!-- JS will populate -->
+  </div>
+
+  <!-- CARD -->
+  <div class="card-shell" id="cardShell">
+    <div class="card-category-pill">
+      <span class="card-category-icon" id="cardIcon">✨</span>
+      <span id="cardCategory">Category</span>
+    </div>
+
+    <div class="card-text" id="cardFront">Front text</div>
+    <div class="card-text back" id="cardBack" style="display:none;">Back text</div>
+
+    <div class="card-footer">
+      <span id="cardIndex">1 / 99</span>
+      <span id="streakDisplay">🔥 0‑day streak</span>
+    </div>
+  </div>
+
+  <!-- NAVIGATION -->
+  <div class="nav-row">
+    <div class="nav-buttons">
+      <button id="prevBtn" class="btn-nav">Prev</button>
+      <button id="flipBtn" class="btn-flip">Flip</button>
+      <button id="nextBtn" class="btn-nav">Next</button>
+    </div>
+  </div>
+
+  <!-- JOURNAL -->
+  <div class="journal">
+    <div class="journal-label">Reflection</div>
+
+    <div class="journal-tabs" id="journalTabs">
+      <div class="journal-tab active" data-tab="reflection">Reflection</div>
+      <div class="journal-tab" data-tab="insight">Insight</div>
+      <div class="journal-tab" data-tab="action">Action</div>
+    </div>
+
+    <textarea id="journalEntry" placeholder="Write your thoughts..."></textarea>
+
+    <div class="mood-row" id="moodRow">
+      <div class="mood-pill">😐</div>
+      <div class="mood-pill">😔</div>
+      <div class="mood-pill">😡</div>
+      <div class="mood-pill">😰</div>
+      <div class="mood-pill">😊</div>
+      <div class="mood-pill">🔥</div>
+    </div>
+
+    <button id="saveJournalBtn" class="btn-reflect">Save Entry</button>
+  </div>
+
+  <!-- BOTTOM BUTTONS -->
+  <button id="guideBtn" class="btn-nav">Usage Guide</button>
+  <button id="settingsBtn" class="btn-nav">Settings</button>
+
+  </div>
+  <script>
+/* --------------------------------------------------
+   CARD DATA (99 CARDS)
+-------------------------------------------------- */
+const cards = [
+  { front: "Pause and breathe", back: "Your nervous system resets fastest through slow exhalation.", category: "Regulation", icon: "🌬️" },
+  { front: "Name the emotion", back: "Labeling emotions reduces amygdala activation by up to 40%.", category: "Awareness", icon: "🧠" },
+  { front: "You are safe", back: "Your body might be reacting to an old threat, not a current one.", category: "Soothing", icon: "🛡️" },
+  { front: "Slow down", back: "Rushing is a trauma response. You can move at a human pace.", category: "Regulation", icon: "🐢" },
+  { front: "Feel it fully", back: "Emotions complete their cycle when you stop resisting them.", category: "Processing", icon: "💧" },
+  { front: "You’re not behind", back: "Your timeline is not meant to match anyone else’s.", category: "Reframing", icon: "⏳" },
+  { front: "One small step", back: "Overwhelm shrinks when you break tasks into tiny actions.", category: "Action", icon: "🪜" },
+  { front: "Ground yourself", back: "Name 5 things you can see, 4 you can touch, 3 you can hear.", category: "Regulation", icon: "🌍" },
+  { front: "You’re allowed to rest", back: "Rest is not earned. It’s required.", category: "Soothing", icon: "😴" },
+  { front: "Check the story", back: "Is this fear based on facts or assumptions?", category: "Awareness", icon: "📖" },
+];
+
+/* Duplicate until we reach 99 cards */
+while (cards.length < 99) {
+  cards.push({
+    ...cards[cards.length % 10],
+    front: cards[cards.length % 10].front + " #" + (cards.length + 1)
+  });
+}
+
+/* --------------------------------------------------
+   STATE
+-------------------------------------------------- */
+let currentIndex = 0;
+let showingBack = false;
+let journalTab = "reflection";
+let streak = parseInt(localStorage.getItem("streak") || "0");
+let lastOpen = localStorage.getItem("lastOpen");
+let customCards = JSON.parse(localStorage.getItem("customCards") || "[]");
+
+/* Merge custom cards */
+let fullDeck = [...cards, ...customCards];
+
+/* --------------------------------------------------
+   ELEMENTS
+-------------------------------------------------- */
+const cardFront = document.getElementById("cardFront");
+const cardBack = document.getElementById("cardBack");
+const cardCategory = document.getElementById("cardCategory");
+const cardIcon = document.getElementById("cardIcon");
+const cardIndex = document.getElementById("cardIndex");
+const cardShell = document.getElementById("cardShell");
+const streakDisplay = document.getElementById("streakDisplay");
+const journalEntry = document.getElementById("journalEntry");
+const journalTabs = document.getElementById("journalTabs");
+const moodRow = document.getElementById("moodRow");
+const categoryBar = document.getElementById("categoryBar");
+
+/* --------------------------------------------------
+   CATEGORY SYSTEM
+-------------------------------------------------- */
+const categories = [...new Set(fullDeck.map(c => c.category))];
+
+function renderCategories() {
+  categoryBar.innerHTML = "";
+  categories.forEach(cat => {
+    const tab = document.createElement("div");
+    tab.className = "category-tab";
+    tab.innerHTML = `<span class="icon">✨</span> ${cat}`;
+    tab.onclick = () => filterByCategory(cat, tab);
+    categoryBar.appendChild(tab);
+  });
+}
+
+function filterByCategory(cat, tab) {
+  document.querySelectorAll(".category-tab").forEach(t => t.classList.remove("active"));
+  tab.classList.add("active");
+
+  fullDeck = [...cards, ...customCards].filter(c => c.category === cat);
+  currentIndex = 0;
+  renderCard();
+}
+
+/* --------------------------------------------------
+   RENDER CARD
+-------------------------------------------------- */
+function renderCard() {
+  const card = fullDeck[currentIndex];
+  if (!card) return;
+
+  cardFront.textContent = card.front;
+  cardBack.textContent = card.back;
+  cardCategory.textContent = card.category;
+  cardIcon.textContent = card.icon;
+  cardIndex.textContent = `${currentIndex + 1} / ${fullDeck.length}`;
+
+  cardFront.style.display = "block";
+  cardBack.style.display = "none";
+  showingBack = false;
+
+  cardShell.classList.add("draw");
+  setTimeout(() => cardShell.classList.remove("draw"), 500);
+}
+
+/* --------------------------------------------------
+   NAVIGATION
+-------------------------------------------------- */
+document.getElementById("nextBtn").onclick = () => {
+  currentIndex = (currentIndex + 1) % fullDeck.length;
+  renderCard();
+};
+
+document.getElementById("prevBtn").onclick = () => {
+  currentIndex = (currentIndex - 1 + fullDeck.length) % fullDeck.length;
+  renderCard();
+};
+
+/* --------------------------------------------------
+   FLIP CARD
+-------------------------------------------------- */
+document.getElementById("flipBtn").onclick = () => {
+  if (!showingBack) {
+    cardFront.classList.add("flip-out");
+    setTimeout(() => {
+      cardFront.style.display = "none";
+      cardBack.style.display = "block";
+      cardBack.classList.add("flip-in");
+    }, 200);
+  } else {
+    cardBack.classList.add("flip-out");
+    setTimeout(() => {
+      cardBack.style.display = "none";
+      cardFront.style.display = "block";
+      cardFront.classList.add("flip-in");
+    }, 200);
+  }
+  showingBack = !showingBack;
+};
+
+/* --------------------------------------------------
+   JOURNAL SYSTEM
+-------------------------------------------------- */
+journalTabs.querySelectorAll(".journal-tab").forEach(tab => {
+  tab.onclick = () => {
+    journalTabs.querySelectorAll(".journal-tab").forEach(t => t.classList.remove("active"));
+    tab.classList.add("active");
+    journalTab = tab.dataset.tab;
+    loadJournal();
+  };
+});
+
+function loadJournal() {
+  const key = `journal_${currentIndex}_${journalTab}`;
+  journalEntry.value = localStorage.getItem(key) || "";
+}
+
+document.getElementById("saveJournalBtn").onclick = () => {
+  const key = `journal_${currentIndex}_${journalTab}`;
+  localStorage.setItem(key, journalEntry.value);
+};
+
+/* --------------------------------------------------
+   MOOD TAGS
+-------------------------------------------------- */
+moodRow.querySelectorAll(".mood-pill").forEach(pill => {
+  pill.onclick = () => {
+    moodRow.querySelectorAll(".mood-pill").forEach(p => p.classList.remove("active"));
+    pill.classList.add("active");
+    localStorage.setItem(`mood_${currentIndex}`, pill.textContent);
+  };
+});
+
+/* --------------------------------------------------
+   STREAK SYSTEM
+-------------------------------------------------- */
+function updateStreak() {
+  const today = new Date().toDateString();
+  if (lastOpen !== today) {
+    streak++;
+    localStorage.setItem("streak", streak);
+    localStorage.setItem("lastOpen", today);
+  }
+  streakDisplay.textContent = `🔥 ${streak}-day streak`;
+}
+
+/* --------------------------------------------------
+   SETTINGS
+-------------------------------------------------- */
+document.getElementById("settingsBtn").onclick = () => {
+  document.getElementById("settingsModal").style.display = "flex";
+};
+
+document.getElementById("closeSettingsBtn").onclick = () => {
+  document.getElementById("settingsModal").style.display = "none";
+};
+
+document.getElementById("resetStreak").onclick = () => {
+  streak = 0;
+  localStorage.setItem("streak", "0");
+  streakDisplay.textContent = "🔥 0-day streak";
+};
+
+/* --------------------------------------------------
+   CUSTOM CARDS
+-------------------------------------------------- */
+document.getElementById("addCardBtn").onclick = () => {
+  document.getElementById("addCardModal").style.display = "flex";
+};
+
+document.getElementById("closeAddCard").onclick = () => {
+  document.getElementById("addCardModal").style.display = "none";
+};
+
+document.getElementById("saveCustomCard").onclick = () => {
+  const front = document.getElementById("customFront").value;
+  const back = document.getElementById("customBack").value;
+  const category = document.getElementById("customCategory").value;
+
+  customCards.push({ front, back, category, icon: "✨" });
+  localStorage.setItem("customCards", JSON.stringify(customCards));
+
+  fullDeck = [...cards, ...customCards];
+  renderCategories();
+  renderCard();
+
+  document.getElementById("addCardModal").style.display = "none";
+};
+
+/* --------------------------------------------------
+   GUIDE MODAL
+-------------------------------------------------- */
+document.getElementById("guideBtn").onclick = () => {
+  document.getElementById("guideModal").style.display = "flex";
+};
+
+document.getElementById("closeGuideBtn").onclick = () => {
+  document.getElementById("guideModal").style.display = "none";
+};
+
+document.querySelectorAll(".guide-section").forEach(section => {
+  section.querySelector(".guide-title").onclick = () => {
+    const open = section.dataset.open === "true";
+    section.dataset.open = open ? "false" : "true";
+  };
+});
+
+/* --------------------------------------------------
+   BACKGROUND MUSIC
+-------------------------------------------------- */
+document.getElementById("toggleMusic").onclick = () => {
+  const music = document.getElementById("bgMusic");
+  if (music.paused) music.play();
+  else music.pause();
+};
+
+/* --------------------------------------------------
+   ONBOARDING + LOADING
+-------------------------------------------------- */
+window.onload = () => {
+  setTimeout(() => {
+    document.getElementById("loadingScreen").style.opacity = 0;
+    setTimeout(() => {
+      document.getElementById("loadingScreen").style.display = "none";
+      document.getElementById("onboarding").style.display = "flex";
+    }, 400);
+  }, 800);
+};
+
+document.getElementById("startAppBtn").onclick = () => {
+  document.getElementById("onboarding").style.display = "none";
+  updateStreak();
+  renderCategories();
+  renderCard();
+  loadJournal();
+};
+</script>
+</body>
+</html>
