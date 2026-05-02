@@ -630,4 +630,278 @@ textarea {
   <button id="settingsBtn" class="btn-nav">Settings</button>
 
        </div>
-         
+         <script>
+/* --------------------------------------------------
+   CARD DATA (99 CARDS)
+-------------------------------------------------- */
+const cards = [
+  { front: "Pause and breathe", back: "Your nervous system resets fastest through slow exhalation.", category: "Regulation", icon: "🌬️" },
+  { front: "Name the emotion", back: "Labeling emotions reduces amygdala activation by up to 40%.", category: "Awareness", icon: "🧠" },
+  { front: "You are safe", back: "Your body might be reacting to an old threat, not a current one.", category: "Soothing", icon: "🛡️" },
+  { front: "Slow down", back: "Rushing is a trauma response. You can move at a human pace.", category: "Regulation", icon: "🐢" },
+  { front: "Feel it fully", back: "Emotions complete their cycle when you stop resisting them.", category: "Processing", icon: "💧" },
+  { front: "You’re not behind", back: "Your timeline is not meant to match anyone else’s.", category: "Reframing", icon: "⏳" },
+  { front: "One small step", back: "Overwhelm shrinks when you break tasks into tiny actions.", category: "Action", icon: "🪜" },
+  { front: "Ground yourself", back: "Name 5 things you can see, 4 you can touch, 3 you can hear.", category: "Regulation", icon: "🌍" },
+  { front: "You’re allowed to rest", back: "Rest is not earned. It’s required.", category: "Soothing", icon: "😴" },
+  { front: "Check the story", back: "Is this fear based on facts or assumptions?", category: "Awareness", icon: "📖" },
+];
+
+/* Duplicate until we reach 99 cards */
+while (cards.length < 99) {
+  cards.push({
+    ...cards[cards.length % 10],
+    front: cards[cards.length % 10].front + " #" + (cards.length + 1)
+  });
+}
+
+/* --------------------------------------------------
+   STATE
+-------------------------------------------------- */
+let currentIndex = 0;
+let showingBack = false;
+let journalTab = "reflection";
+let streak = parseInt(localStorage.getItem("streak") || "0");
+let lastOpen = localStorage.getItem("lastOpen");
+let customCards = JSON.parse(localStorage.getItem("customCards") || "[]");
+
+/* Merge custom cards */
+let fullDeck = [...cards, ...customCards];
+
+/* --------------------------------------------------
+   ELEMENTS
+-------------------------------------------------- */
+const cardFront = document.getElementById("cardFront");
+const cardBack = document.getElementById("cardBack");
+const cardCategory = document.getElementById("cardCategory");
+const cardIcon = document.getElementById("cardIcon");
+const cardIndex = document.getElementById("cardIndex");
+const cardShell = document.getElementById("cardShell");
+const streakDisplay = document.getElementById("streakDisplay");
+const journalEntry = document.getElementById("journalEntry");
+const journalTabs = document.getElementById("journalTabs");
+const moodRow = document.getElementById("moodRow");
+const categoryBar = document.getElementById("categoryBar");
+
+/* --------------------------------------------------
+   CATEGORY SYSTEM
+-------------------------------------------------- */
+const categories = [...new Set(fullDeck.map(c => c.category))];
+
+function renderCategories() {
+  categoryBar.innerHTML = "";
+  categories.forEach(cat => {
+    const tab = document.createElement("div");
+    tab.className = "category-tab";
+    tab.innerHTML = `<span class="icon">✨</span> ${cat}`;
+    tab.onclick = () => filterByCategory(cat, tab);
+    categoryBar.appendChild(tab);
+  });
+}
+
+function filterByCategory(cat, tab) {
+  document.querySelectorAll(".category-tab").forEach(t => t.classList.remove("active"));
+  tab.classList.add("active");
+
+  fullDeck = [...cards, ...customCards].filter(c => c.category === cat);
+  currentIndex = 0;
+  renderCard();
+}
+
+/* --------------------------------------------------
+   RENDER CARD
+-------------------------------------------------- */
+function renderCard() {
+  const card = fullDeck[currentIndex];
+  if (!card) return;
+
+  cardFront.textContent = card.front;
+  cardBack.textContent = card.back;
+  cardCategory.textContent = card.category;
+  cardIcon.textContent = card.icon;
+  cardIndex.textContent = `${currentIndex + 1} / ${fullDeck.length}`;
+
+  cardFront.style.display = "block";
+  cardBack.style.display = "none";
+  showingBack = false;
+
+  cardShell.classList.add("draw");
+  setTimeout(() => cardShell.classList.remove("draw"), 500);
+}
+
+/* --------------------------------------------------
+   NAVIGATION
+-------------------------------------------------- */
+document.getElementById("nextBtn").onclick = () => {
+  currentIndex = (currentIndex + 1) % fullDeck.length;
+  renderCard();
+};
+
+document.getElementById("prevBtn").onclick = () => {
+  currentIndex = (currentIndex - 1 + fullDeck.length) % fullDeck.length;
+  renderCard();
+};
+
+/* --------------------------------------------------
+   FLIP CARD
+-------------------------------------------------- */
+document.getElementById("flipBtn").onclick = () => {
+  if (!showingBack) {
+    cardFront.classList.add("flip-out");
+    setTimeout(() => {
+      cardFront.style.display = "none";
+      cardBack.style.display = "block";
+      cardBack.classList.add("flip-in");
+    }, 200);
+  } else {
+    cardBack.classList.add("flip-out");
+    setTimeout(() => {
+      cardBack.style.display = "none";
+      cardFront.style.display = "block";
+      cardFront.classList.add("flip-in");
+    }, 200);
+  }
+  showingBack = !showingBack;
+};
+
+/* --------------------------------------------------
+   JOURNAL SYSTEM
+-------------------------------------------------- */
+journalTabs.querySelectorAll(".journal-tab").forEach(tab => {
+  tab.onclick = () => {
+    journalTabs.querySelectorAll(".journal-tab").forEach(t => t.classList.remove("active"));
+    tab.classList.add("active");
+    journalTab = tab.dataset.tab;
+    loadJournal();
+  };
+});
+
+function loadJournal() {
+  const key = `journal_${currentIndex}_${journalTab}`;
+  journalEntry.value = localStorage.getItem(key) || "";
+}
+
+document.getElementById("saveJournalBtn").onclick = () => {
+  const key = `journal_${currentIndex}_${journalTab}`;
+  localStorage.setItem(key, journalEntry.value);
+};
+
+/* --------------------------------------------------
+   MOOD TAGS
+-------------------------------------------------- */
+moodRow.querySelectorAll(".mood-pill").forEach(pill => {
+  pill.onclick = () => {
+    moodRow.querySelectorAll(".mood-pill").forEach(p => p.classList.remove("active"));
+    pill.classList.add("active");
+    localStorage.setItem(`mood_${currentIndex}`, pill.textContent);
+  };
+});
+
+/* --------------------------------------------------
+   STREAK SYSTEM
+-------------------------------------------------- */
+function updateStreak() {
+  const today = new Date().toDateString();
+  if (lastOpen !== today) {
+    streak++;
+    localStorage.setItem("streak", streak);
+    localStorage.setItem("lastOpen", today);
+  }
+  streakDisplay.textContent = `🔥 ${streak}-day streak`;
+}
+
+/* --------------------------------------------------
+   SETTINGS
+-------------------------------------------------- */
+document.getElementById("settingsBtn").onclick = () => {
+  document.getElementById("settingsModal").style.display = "flex";
+};
+
+document.getElementById("closeSettingsBtn").onclick = () => {
+  document.getElementById("settingsModal").style.display = "none";
+};
+
+document.getElementById("resetStreak").onclick = () => {
+  streak = 0;
+  localStorage.setItem("streak", "0");
+  streakDisplay.textContent = "🔥 0-day streak";
+};
+
+/* --------------------------------------------------
+   CUSTOM CARDS
+-------------------------------------------------- */
+document.getElementById("addCardBtn").onclick = () => {
+  document.getElementById("addCardModal").style.display = "flex";
+};
+
+document.getElementById("closeAddCard").onclick = () => {
+  document.getElementById("addCardModal").style.display = "none";
+};
+
+document.getElementById("saveCustomCard").onclick = () => {
+  const front = document.getElementById("customFront").value;
+  const back = document.getElementById("customBack").value;
+  const category = document.getElementById("customCategory").value;
+
+  customCards.push({ front, back, category, icon: "✨" });
+  localStorage.setItem("customCards", JSON.stringify(customCards));
+
+  fullDeck = [...cards, ...customCards];
+  renderCategories();
+  renderCard();
+
+  document.getElementById("addCardModal").style.display = "none";
+};
+
+/* --------------------------------------------------
+   GUIDE MODAL
+-------------------------------------------------- */
+document.getElementById("guideBtn").onclick = () => {
+  document.getElementById("guideModal").style.display = "flex";
+};
+
+document.getElementById("closeGuideBtn").onclick = () => {
+  document.getElementById("guideModal").style.display = "none";
+};
+
+document.querySelectorAll(".guide-section").forEach(section => {
+  section.querySelector(".guide-title").onclick = () => {
+    const open = section.dataset.open === "true";
+    section.dataset.open = open ? "false" : "true";
+  };
+});
+
+/* --------------------------------------------------
+   BACKGROUND MUSIC
+-------------------------------------------------- */
+document.getElementById("toggleMusic").onclick = () => {
+  const music = document.getElementById("bgMusic");
+  if (music.paused) music.play();
+  else music.pause();
+};
+
+/* --------------------------------------------------
+   ONBOARDING + LOADING
+-------------------------------------------------- */
+window.onload = () => {
+  setTimeout(() => {
+    document.getElementById("loadingScreen").style.opacity = 0;
+    setTimeout(() => {
+      document.getElementById("loadingScreen").style.display = "none";
+      document.getElementById("onboarding").style.display = "flex";
+    }, 400);
+  }, 800);
+};
+
+document.getElementById("startAppBtn").onclick = () => {
+  document.getElementById("onboarding").style.display = "none";
+  updateStreak();
+  renderCategories();
+  renderCard();
+  loadJournal();
+};
+</script>
+     </body>
+</html>
+
+     
