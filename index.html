@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Deck of Emotional Mastery</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+<!-- App Icon + Theme -->
+<link rel="icon" href="https://i.imgur.com/1XQw1QF.png">
+<link rel="apple-touch-icon" href="https://i.imgur.com/1XQw1QF.png">
+<meta name="theme-color" content="#ff007f">
+
+<style>
+/* --------------------------------------------------
+   GLOBAL VARIABLES
+-------------------------------------------------- */
+:root {
+  --plum: #53194E;
+  --hot-pink: #FF007F;
+  --teal: #008080;
+  --olive: #708238;
+  --sky: #87CEEB;
+  --navy: #1A1A40;
+  --black: #000000;
+  --bg: #111111;
+  --text: #FFFFFF;
+}
+
+/* --------------------------------------------------
+   RESET + BASE
+-------------------------------------------------- */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+body {
+  background: #ff007f;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  color: var(--text);
+  transition: background 0.3s ease;
+}
+
+/* --------------------------------------------------
+   APP CONTAINER
+-------------------------------------------------- */
+.app {
+  background: #000000;
+  border-radius: 24px;
+  max-width: 420px;
+  width: 100%;
+  padding: 16px 16px 20px;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  position: relative;
+}
+
+/* --------------------------------------------------
+   HEADER
+-------------------------------------------------- */
+.app-header {
+  text-align: center;
+  font-size: 12px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #ffb3d5;
+}
+
+/* --------------------------------------------------
+   CATEGORY BAR
+-------------------------------------------------- */
+.category-bar {
+  display: flex;
+  gap: 4px;
+  margin-top: 4px;
+  justify-content: space-between;
+}
+
+.category-tab {
+  flex: 1;
+  border-radius: 999px;
+  padding: 4px 6px;
+  font-size: 9px;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #ffffff;
+  opacity: 0.6;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  border: 1px solid transparent;
+  transition: 0.2s ease;
+}
+
+.category-tab.active {
+  opacity: 1;
+  border-color: #ffffff;
+}
+
+.category-tab span.icon {
+  font-size: 12px;
+}
+
+/* --------------------------------------------------
+   CARD SHELL
+-------------------------------------------------- */
+.card-shell {
+  position: relative;
+  background: radial-gradient(circle at top, #2b002b, #000000);
+  border-radius: 20px;
+  padding: 18px 16px 16px;
+  min-height: 260px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow: hidden;
+  transition: background 0.3s ease;
+}
+
+/* Card Draw Animation */
+.card-shell.draw {
+  animation: drawCard 0.5s ease;
+}
+
+@keyframes drawCard {
+  0% { transform: scale(0.8) rotate(-3deg); opacity:0; }
+  100% { transform: scale(1) rotate(0deg); opacity:1; }
+}
+
+/* --------------------------------------------------
+   CARD CONTENT
+-------------------------------------------------- */
+.card-category-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  background: rgba(0,0,0,0.5);
+  color: #ffffff;
+}
+
+.card-category-icon {
+  font-size: 14px;
+}
+
+.card-text {
+  margin-top: 12px;
+  font-weight: 800;
+  font-size: 18px;
+  line-height: 1.3;
+  text-transform: uppercase;
+  transition: transform 0.35s ease, opacity 0.35s ease;
+}
+
+.card-text.back {
+  font-size: 15px;
+  text-transform: none;
+  font-weight: 600;
+}
+
+/* Swipe Animations */
+.card-text.swipe-left {
+  transform: translateX(-80px);
+  opacity: 0;
+}
+
+.card-text.swipe-right {
+  transform: translateX(80px);
+  opacity: 0;
+}
+
+/* Flip Animations */
+.card-text.flip-out {
+  transform: rotateY(90deg);
+  opacity: 0;
+}
+
+.card-text.flip-in {
+  transform: rotateY(0deg);
+  opacity: 1;
+}
+
+/* --------------------------------------------------
+   CARD FOOTER
+-------------------------------------------------- */
+.card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 16px;
+  font-size: 11px;
+  opacity: 0.8;
+}
+
+.card-index {
+  font-variant-numeric: tabular-nums;
+}
+
+/* --------------------------------------------------
+   BUTTONS
+-------------------------------------------------- */
+.nav-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 8px;
+  gap: 8px;
+}
+
+.nav-buttons {
+  display: flex;
+  gap: 8px;
+}
+
+button {
+  border: none;
+  cursor: pointer;
+  border-radius: 999px;
+  padding: 8px 14px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.btn-nav {
+  background: #1f1f1f;
+  color: #ffffff;
+}
+
+.btn-reflect {
+  background: #ff007f;
+  color: #000000;
+  flex: 1;
+  text-align: center;
+  margin-top: 6px;
+}
+
+.btn-flip {
+  background: #ffffff;
+  color: #000000;
+}
+
+/* --------------------------------------------------
+   JOURNAL
+-------------------------------------------------- */
+.journal {
+  margin-top: 10px;
+  background: #111111;
+  border-radius: 16px;
+  padding: 10px 10px 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.journal-label {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  opacity: 0.7;
+}
+
+.journal-tabs {
+  display: flex;
+  gap: 4px;
+  margin-top: 4px;
+  flex-wrap: wrap;
+}
+
+.journal-tab {
+  padding: 4px 8px;
+  border-radius: 999px;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  background: #1f1f1f;
+  color: #ffffff;
+  opacity: 0.6;
+  cursor: pointer;
+  border: 1px solid transparent;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.journal-tab.active {
+  opacity: 1;
+  border-color: #ff007f;
+  background: #2b002b;
+}
+
+textarea {
+  width: 100%;
+  min-height: 70px;
+  border-radius: 10px;
+  border: 1px solid #333333;
+  background: #050505;
+  color: #ffffff;
+  padding: 8px;
+  font-size: 12px;
+  resize: vertical;
+  margin-top: 4px;
+}
+
+/* --------------------------------------------------
+   MOOD TAGS
+-------------------------------------------------- */
+.mood-row {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-top: 2px;
+}
+
+.mood-pill {
+  font-size: 14px;
+  padding: 4px 8px;
+  border-radius: 999px;
+  background: #1f1f1f;
+  cursor: pointer;
+  border: 1px solid transparent;
+}
+
+.mood-pill.active {
+  border-color: #ff007f;
+  background: #2b002b;
+}
+
+/* --------------------------------------------------
+   GUIDE + SETTINGS MODALS
+-------------------------------------------------- */
+#guideModal, #settingsModal, #addCardModal, #journalLock {
+  position:fixed;
+  inset:0;
+  background:#000000d9;
+  display:none;
+  flex-direction:column;
+  z-index:9997;
+  padding:20px;
+  color:white;
+  overflow-y:auto;
+}
+
+#guideModal::-webkit-scrollbar,
+#settingsModal::-webkit-scrollbar {
+  width: 6px;
+}
+#guideModal::-webkit-scrollbar-thumb,
+#settingsModal::-webkit-scrollbar-thumb {
+  background: #ff007f;
+  border-radius: 10px;
+}
+
+.guide-section {
+  background:#111;
+  border-radius:12px;
+  padding:10px 14px;
+  margin-bottom:12px;
+  transition:0.3s ease;
+}
+
+.guide-title {
+  margin:0;
+  font-size:16px;
+  cursor:pointer;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+.guide-title::after {
+  content:"+";
+  font-size:20px;
+  transition:0.3s ease;
+}
+
+.guide-section[data-open="true"] .guide-title::after {
+  content:"–";
+}
+
+.guide-content {
+  max-height:0;
+  overflow:hidden;
+  opacity:0;
+  transition:0.3s ease;
+}
+
+.guide-section[data-open="true"] .guide-content {
+  max-height:500px;
+  opacity:1;
+  margin-top:8px;
+}
+
+/* --------------------------------------------------
+   LOADING SCREEN
+-------------------------------------------------- */
+#loadingScreen {
+  position:fixed;
+  inset:0;
+  background:#ff007f;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex-direction:column;
+  z-index:9999;
+  color:#fff;
+  font-size:20px;
+  font-weight:700;
+  letter-spacing:0.1em;
+  text-align:center;
+  transition:opacity 0.4s ease;
+}
+
+/* --------------------------------------------------
+   ONBOARDING
+-------------------------------------------------- */
+#onboarding {
+  position:fixed;
+  inset:0;
+  background:#000000e8;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  z-index:9998;
+  color:white;
+  padding:20px;
+  text-align:center;
+  transition:opacity 0.4s ease;
+}
+
+/* --------------------------------------------------
+   SETTINGS SECTIONS
+-------------------------------------------------- */
+.settings-section {
+  background:#111;
+  padding:12px;
+  border-radius:12px;
+  margin-bottom:12px;
+}
+
+/* --------------------------------------------------
+   RESPONSIVE
+-------------------------------------------------- */
+@media (max-width: 480px) {
+  .card-text {
+    font-size: 16px;
+  }
+  .card-text.back {
+    font-size: 14px;
+  }
+}
+</style>
+  </head>
+  
